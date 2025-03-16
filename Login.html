@@ -104,6 +104,16 @@
             display: none;
         }
         
+        .notification {
+            background: #ffdeaf;
+            border-left: 4px solid #ff9800;
+            padding: 0.75rem;
+            margin-bottom: 1.5rem;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            display: none;
+        }
+        
         /* Dashboard styles */
         .dashboard {
             display: none;
@@ -208,6 +218,7 @@
     <!-- Login Container -->
     <div id="loginContainer" class="container">
         <div class="card">
+            <div class="notification" id="loginNotification"></div>
             <h1>Welcome Back</h1>
             <form id="loginForm">
                 <div class="form-group">
@@ -227,7 +238,7 @@
     <!-- Dashboard Container -->
     <div id="dashboardContainer" class="dashboard">
         <div class="welcome-header">
-            <h1>Hello Welcome !                        
+            <h1>Hello <span id="userName">Welcome</span>!</h1>                  
             <button class="logout-btn" id="logoutBtn">Logout</button>
         </div>
         <div class="tiles">
@@ -253,16 +264,57 @@
         const loginContainer = document.getElementById('loginContainer');
         const dashboardContainer = document.getElementById('dashboardContainer');
         const loginError = document.getElementById('loginError');
+        const loginNotification = document.getElementById('loginNotification');
         const userName = document.getElementById('userName');
         const logoutBtn = document.getElementById('logoutBtn');
         const dataEntryTile = document.getElementById('dataEntryTile');
         const dashboardTile = document.getElementById('dashboardTile');
         
-        // Check if user is already logged in
+        // Authentication check function
+        function checkAuth() {
+            return localStorage.getItem('isLoggedIn') === 'true';
+        }
+        
+        // Page redirect utility function
+        function redirectToLogin(message) {
+            if (!checkAuth()) {
+                // Store the attempted URL to redirect back after login
+                if (message) {
+                    localStorage.setItem('loginMessage', message);
+                    localStorage.setItem('redirectAfterLogin', window.location.href);
+                }
+                
+                // If not on login page already, redirect to login
+                if (!window.location.href.includes('index.html') && 
+                    !window.location.pathname.endsWith('/')) {
+                    window.location.href = 'index.html';
+                    return false;
+                }
+            }
+            return true;
+        }
+        
+        // Check for redirect parameter or auth status on page load
         window.addEventListener('DOMContentLoaded', () => {
-            if (localStorage.getItem('isLoggedIn') === 'true') {
+            // Handle saved login message if exists
+            const loginMessage = localStorage.getItem('loginMessage');
+            if (loginMessage) {
+                loginNotification.textContent = loginMessage;
+                loginNotification.style.display = 'block';
+                localStorage.removeItem('loginMessage');
+                
+                // Auto-hide the notification after 5 seconds
+                setTimeout(() => {
+                    loginNotification.style.display = 'none';
+                }, 5000);
+            }
+            
+            // Check authentication status and show appropriate view
+            if (checkAuth()) {
                 showDashboard();
                 userName.textContent = localStorage.getItem('username') || 'User';
+            } else {
+                showLogin();
             }
         });
         
@@ -277,8 +329,16 @@
             if (usernameInput === validUser.username && passwordInput === validUser.password) {
                 localStorage.setItem('isLoggedIn', 'true');
                 localStorage.setItem('username', usernameInput);
-                showDashboard();
-                userName.textContent = usernameInput;
+                
+                // Check if there's a redirect URL saved
+                const redirectUrl = localStorage.getItem('redirectAfterLogin');
+                if (redirectUrl) {
+                    localStorage.removeItem('redirectAfterLogin');
+                    window.location.href = redirectUrl;
+                } else {
+                    showDashboard();
+                    userName.textContent = usernameInput;
+                }
             } else {
                 loginError.style.display = 'block';
                 setTimeout(() => {
@@ -294,7 +354,7 @@
             showLogin();
         });
         
-        // Tile Navigation
+        // Tile Navigation with auth check
         dataEntryTile.addEventListener('click', () => {
             window.location.href = 'enter.html';
         });
@@ -311,7 +371,7 @@
         
         function showLogin() {
             dashboardContainer.style.display = 'none';
-            loginContainer.style.display = 'block';
+            loginContainer.style.display = 'flex';
         }
     </script>
 </body>
