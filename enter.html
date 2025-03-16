@@ -836,6 +836,20 @@
     <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;"></iframe>
 
     <script>
+	
+	// Check if user is logged in on page load
+window.addEventListener('DOMContentLoaded', () => {
+    // Check if user is logged in by checking localStorage
+    if (localStorage.getItem('isLoggedIn') !== 'true') {
+        // User is not logged in, redirect to login page
+        localStorage.setItem('loginMessage', 'Please log in to view the dashboard');
+        // Store the current page URL to redirect back after login
+        localStorage.setItem('redirectAfterLogin', window.location.href);
+        // Redirect to login page
+        window.location.href = 'index.html';
+    }
+});
+	
         document.addEventListener('DOMContentLoaded', function() {
             // Cache DOM elements
             const form = document.getElementById('teacherForm');
