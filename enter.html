@@ -1,0 +1,1046 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>School Teacher Census System</title>
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --primary-dark: #1d4ed8;
+            --secondary-color: #4f46e5;
+            --success-color: #10b981;
+            --text-color: #1e293b;
+            --bg-color: #f1f5f9;
+            --card-bg: #ffffff;
+            --border-color: #e2e8f0;
+            --accent-color: #f97316;
+            --highlight: #fef3c7;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            padding: 20px;
+            background-image: linear-gradient(135deg, #f0f9ff 0%, #e6f7ff 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 25px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: "";
+            position: absolute;
+            top: -50px;
+            left: -50px;
+            width: 100px;
+            height: 100px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+        }
+
+        .header::after {
+            content: "";
+            position: absolute;
+            bottom: -30px;
+            right: -30px;
+            width: 80px;
+            height: 80px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+        }
+
+        .header h1 {
+            font-size: 32px;
+            margin-bottom: 10px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .header p {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+
+        .form-card {
+            background-color: var(--card-bg);
+            border-radius: 16px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.08);
+            padding: 30px;
+            margin-bottom: 30px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .form-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
+        }
+
+        .form-section {
+            margin-bottom: 30px;
+            position: relative;
+            padding-top: 10px;
+        }
+
+        .form-section h2 {
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--primary-color);
+            font-size: 22px;
+            display: inline-block;
+        }
+
+        .form-section::after {
+            content: "";
+            display: block;
+            height: 1px;
+            width: 100%;
+            background: linear-gradient(to right, transparent, var(--border-color), transparent);
+            margin-top: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: var(--text-color);
+            transition: all 0.3s ease;
+            font-size: 15px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background-color: rgba(255, 255, 255, 0.8);
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.15);
+            background-color: white;
+        }
+
+        .form-control:hover {
+            border-color: #cbd5e1;
+        }
+
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+            margin: 0 -15px;
+        }
+
+        .col {
+            flex: 1;
+            padding: 0 15px;
+            min-width: 200px;
+        }
+
+        @media (max-width: 768px) {
+            .col {
+                flex: 0 0 100%;
+                margin-bottom: 15px;
+            }
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 16px 32px;
+            border: none;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            display: block;
+            width: 100%;
+            max-width: 250px;
+            margin: 0 auto;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 15px rgba(37, 99, 235, 0.25);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .submit-btn::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: 0.5s;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(37, 99, 235, 0.3);
+        }
+
+        .submit-btn:hover::after {
+            left: 100%;
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        #successMessage {
+            display: none;
+            position: fixed;
+            top: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: var(--success-color);
+            color: white;
+            padding: 18px 30px;
+            border-radius: 10px;
+            z-index: 1000;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+            text-align: center;
+            font-weight: 600;
+            min-width: 300px;
+            animation: fadeInDown 0.5s ease;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translate(-50%, -20px);
+            }
+            to {
+                opacity: 1;
+                transform: translate(-50%, 0);
+            }
+        }
+
+        .required::after {
+            content: " *";
+            color: #ef4444;
+            font-size: 1.1em;
+        }
+
+        .census-number {
+            font-weight: bold;
+            font-size: 1.1em;
+            color: var(--primary-color);
+        }
+        
+        #overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+            backdrop-filter: blur(3px);
+            transition: all 0.3s ease;
+        }
+        
+        .spinner {
+            display: inline-block;
+            width: 24px;
+            height: 24px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+            margin-right: 10px;
+            vertical-align: middle;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Custom select styling */
+        select.form-control {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%232563eb' width='18px' height='18px'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 15px center;
+            padding-right: 40px;
+        }
+
+        /* Form field highlight effect */
+        .highlight {
+            background-color: var(--highlight);
+            transition: background-color 0.5s ease;
+        }
+
+        /* Added icons for form sections */
+        .form-section-icon {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            vertical-align: middle;
+            margin-right: 10px;
+        }
+
+        .school-icon {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%232563eb'%3E%3Cpath d='M12 3L1 9l4 2.18v6L12 21l7-3.82v-6l2-1.09V17h2V9L12 3zm6.82 6L12 12.72 5.18 9 12 5.28 18.82 9zM17 15.99l-5 2.73-5-2.73v-3.72L12 15l5-2.73v3.72z'/%3E%3C/svg%3E");
+        }
+
+        .teacher-icon {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%232563eb'%3E%3Cpath d='M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z'/%3E%3C/svg%3E");
+        }
+
+        .teaching-icon {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%232563eb'%3E%3Cpath d='M9 21c0 .55.45 1 1 1h4c.55 0 1-.45 1-1v-1H9v1zm3-19C8.14 2 5 5.14 5 9c0 2.38 1.19 4.47 3 5.74V17c0 .55.45 1 1 1h6c.55 0 1-.45 1-1v-2.26c1.81-1.27 3-3.36 3-5.74 0-3.86-3.14-7-7-7zm2.85 11.1l-.85.6V16h-4v-2.3l-.85-.6A4.997 4.997 0 0 1 7 9c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.63-.8 3.16-2.15 4.1z'/%3E%3C/svg%3E");
+        }
+        
+        /* Tooltip styles */
+        .tooltip {
+            position: relative;
+            display: inline-block;
+            margin-left: 8px;
+            cursor: help;
+        }
+        
+        .tooltip-icon {
+            display: inline-block;
+            width: 18px;
+            height: 18px;
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 18px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        
+        .tooltip .tooltip-text {
+            visibility: hidden;
+            width: 200px;
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 8px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            margin-left: -100px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            font-weight: normal;
+            font-size: 14px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .tooltip .tooltip-text::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: #333 transparent transparent transparent;
+        }
+        
+        .tooltip:hover .tooltip-text {
+            visibility: visible;
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>School Teachers Infromation System</h1>
+            <p>Zonal Education Office - Thanamalwila</p>
+        </div>
+
+        <div class="form-card">
+            <!-- Explicitly set method to POST -->
+            <form id="teacherForm" method="POST" target="hidden_iframe">
+                <div class="form-section">
+                    <div style="display: flex; align-items: center;">
+                        <span class="form-section-icon school-icon"></span>
+                        <h2>School Information</h2>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="Census" class="required">Census Number</label>
+                        <input type="text" id="Census" name="entry.795888079" class="form-control" required placeholder="Enter census number">
+                        <div class="tooltip">
+                            <span class="tooltip-icon">?</span>
+                            <span class="tooltip-text">The unique identifier for schools</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="School_Name" class="required">Name of the School</label>
+                       <select id="School_Name" name="entry.1874955973" class="form-control" required>
+                            <option value="">-- Select School --</option>
+                            <option value="KETHSIRIGAMA M.V.">KETHSIRIGAMA M.V.</option>
+<option value="MUTHUMINIGAMA K.V.">MUTHUMINIGAMA K.V.</option>
+<option value="KEERTHIKUMARAPURA K.V.">KEERTHIKUMARAPURA K.V.</option>
+<option value="AGUNUKOLAPALASSA M.V.">AGUNUKOLAPALASSA M.V.</option>
+<option value="KATHARAGAMA M.M.V.">KATHARAGAMA M.M.V.</option>
+<option value="SOMADEVI M.V.">SOMADEVI M.V.</option>
+<option value="HAMBEGAMUWA M.V.">HAMBEGAMUWA M.V.</option>
+<option value="THANAMALVILA M.M.V.">THANAMALVILA M.M.V.</option>
+<option value="KALAWELGALA P.V.">KALAWELGALA P.V.</option>
+<option value="SANDHARAJA M.V.">SANDHARAJA M.V.</option>
+<option value="BODAGAMA M.V.">BODAGAMA M.V.</option>
+<option value="SELLA KATHARAGAMA M.V.">SELLA KATHARAGAMA M.V.</option>
+<option value="HABARALUWEWA M.V.">HABARALUWEWA M.V.</option>
+<option value="ALUTHWEWA K.V.">ALUTHWEWA K.V.</option>
+<option value="NIKAWEWA P.V.">NIKAWEWA P.V.</option>
+<option value="NIYADAGALA P.V.">NIYADAGALA P.V.</option>
+<option value="KIRIIBBANWEWA BANDARANAYAKA M.M.V.">KIRIIBBANWEWA BANDARANAYAKA M.M.V.</option>
+<option value="MAHAGAMA MAHANAGA M.V.">MAHAGAMA MAHANAGA M.V.</option>
+<option value="HAMBEGAMUWA JANAPADAYA K.V.">HAMBEGAMUWA JANAPADAYA K.V.</option>
+<option value="DETAGAMUWA K.V.">DETAGAMUWA K.V.</option>
+<option value="SAMGIPURA THARUNA JANAPADA K.V.">SAMGIPURA THARUNA JANAPADA K.V.</option>
+<option value="KOTAWEHERAMANKADA M.V.">KOTAWEHERAMANKADA M.V.</option>
+<option value="SEWANAGALA M.V.">SEWANAGALA M.V.</option>
+<option value="KOULARA M.V.">KOULARA M.V.</option>
+<option value="GOTHAMIGAMA K.V.">GOTHAMIGAMA K.V.</option>
+<option value="SEWANAGALA USBIM M.V.">SEWANAGALA USBIM M.V.</option>
+<option value="KAHAKURULAN PALASSA K.V.">KAHAKURULAN PALASSA K.V.</option>
+<option value="NALANDA K.V.">NALANDA K.V.</option>
+<option value="DHARMALOKA K.V.">DHARMALOKA K.V.</option>
+<option value="LAGINAGALA K.V.">LAGINAGALA K.V.</option>
+<option value="HABARUGALA VIDYALAYA">HABARUGALA VIDYALAYA</option>
+<option value="INDIKOLAPALASSA P.V.">INDIKOLAPALASSA P.V.</option>
+<option value="RATHBALAGAMA K.V.">RATHBALAGAMA K.V.</option>
+<option value="NUGEGALAYAYA P.V.">NUGEGALAYAYA P.V.</option>
+<option value="WIJAYAPURA JUNIOR SCHOOL">WIJAYAPURA JUNIOR SCHOOL</option>
+<option value="KIULARA SAMANSIRI KARUNARATHNA P.V.">KIULARA SAMANSIRI KARUNARATHNA P.V.</option>
+<option value="HAMBEGAMUWA P.V.">HAMBEGAMUWA P.V.</option>
+<option value="SHASHINDRA KUMARA P.V.">SHASHINDRA KUMARA P.V.</option>
+<option value="SWARNAPRDEEPA P.V.">SWARNAPRDEEPA P.V.</option>
+<option value="THANAMALVILA P.V.">THANAMALVILA P.V.</option>
+<option value="MAHAGAMA MODEL PRIMARY SCHOOL">MAHAGAMA MODEL PRIMARY SCHOOL</option>
+<option value="BANDARANAYAKA PRIMARY SCHOOL">BANDARANAYAKA PRIMARY SCHOOL</option>
+<option value="KOULARA PRIMARY SCHOOL">KOULARA PRIMARY SCHOOL</option>
+
+                       </select>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <div style="display: flex; align-items: center;">
+                        <span class="form-section-icon teacher-icon"></span>
+                        <h2>Teacher Information</h2>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col">
+                            <div class="form-group">
+                                <label for="Name_of_the_Teacher" class="required">Name of the Teacher</label>
+                                <input type="text" id="Name_of_the_Teacher" name="entry.1561293275" class="form-control" required placeholder="Full name">
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group">
+                                <label for="Gender" class="required">Gender</label>
+                                <select id="Gender" name="entry.55730381" class="form-control" required>
+                                    <option value="">-- Select Gender --</option>
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col">
+                            <div class="form-group">
+                                <label for="Birthday" class="required">Birthday (YYYYMMDD)</label>
+                                <input type="text" id="Birthday" name="entry.1094899035" class="form-control" required placeholder="YYYY.MM.DD (e.g., 1985.02.02)" maxlength="10">
+                                <div class="tooltip">
+                                    <span class="tooltip-icon">?</span>
+                                    <span class="tooltip-text">Enter date in YYYY.MM.DD format (e.g. 1985.02.02)</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group">
+                                <label for="ID_number" class="required">ID Number</label>
+                                <input type="text" id="ID_number" name="entry.1570182376" class="form-control" required placeholder="National ID number">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Telephone_number" class="required">Telephone Number</label>
+                        <input type="tel" id="Telephone_number" name="entry.1261508504" class="form-control" required placeholder="Contact number">
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <div style="display: flex; align-items: center;">
+                        <span class="form-section-icon teaching-icon"></span>
+                        <h2>Teaching Details</h2>
+                    </div>
+							<div class="row">
+    <div class="col">
+        <div class="form-group">
+            <label for="Appointment_Date" class="required">Date of Appointment to Present School</label>
+            <input type="text" id="Appointment_date_of_present_school" name="entry.1443190713" class="form-control" required placeholder="YYYY.MM.DD (e.g., 2018.09.01)" maxlength="10">
+            <div class="tooltip">
+                <span class="tooltip-icon">?</span>
+                <span class="tooltip-text">Enter date in YYYY.MM.DD format (e.g. 2018.09.01)</span>
+            </div>
+        </div>
+    </div>
+    <div class="col">
+        <!-- This column can be left empty or used for another field -->
+    </div>
+</div>				
+                    <div class="row">
+                        <div class="col">
+                            <div class="form-group">
+                                <label for="Appointment_subject" class="required">Appointment Subject</label>
+                                <select id="Appointment_subject" name="entry.2104703356" class="form-control" required>
+                                    <option value="">-- Select Subject --</option>
+									<option value="Graduate Genaral">Graduate Genaral</option>
+                                    <option value="Primary">Primary</option>
+<option value="Primary English">Primary English</option>
+<option value="Aesthetic (Only for Primary Schools where no.of Students>100)">Aesthetic (Only for Primary Schools where no.of Students>100)</option>
+<option value="Science">Science</option>
+<option value="Mathematics">Mathematics</option>
+<option value="Tamil">Tamil</option>
+<option value="Sinhala">Sinhala</option>
+<option value="English">English</option>
+<option value="History">History</option>
+<option value="Hinduism">Hinduism</option>
+<option value="Buddhism">Buddhism</option>
+<option value="Roman Catholic">Roman Catholic</option>
+<option value="Christianity">Christianity</option>
+<option value="Islam">Islam</option>
+<option value="Business & Accountancy Studies">Business & Accountancy Studies</option>
+<option value="Geography">Geography</option>
+<option value="Civics Studies">Civics Studies</option>
+<option value="Entrepreneurship Studies">Entrepreneurship Studies</option>
+<option value="Second Language Sinhala">Second Language Sinhala</option>
+<option value="Second Language Tamil">Second Language Tamil</option>
+<option value="Sanskrit">Sanskrit</option>
+<option value="Arabic">Arabic</option>
+<option value="Eastern Music">Eastern Music</option>
+<option value="Western Music">Western Music</option>
+<option value="Carnatic Music">Carnatic Music</option>
+<option value="Art">Art</option>
+<option value="Dancing (Traditional)">Dancing (Traditional)</option>
+<option value="Dancing (Bharatha)">Dancing (Bharatha)</option>
+<option value="Appreciation Literary">Appreciation Literary</option>
+<option value="Appreciation Literary (Arabic)">Appreciation Literary (Arabic)</option>
+<option value="Drama & Theatre">Drama & Theatre</option>
+<option value="ICT">ICT</option>
+<option value="Agriculture & Food Technology">Agriculture & Food Technology</option>
+<option value="Aquatic Bioresources Technology">Aquatic Bioresources Technology</option>
+<option value="Design & Technology">Design & Technology</option>
+<option value="Art & Craft">Art & Craft</option>
+<option value="Home Economics">Home Economics</option>
+<option value="Health & Physical Education">Health & Physical Education</option>
+<option value="Communication & Media Studies">Communication & Media Studies</option>
+<option value="Practical and Technical Skills">Practical and Technical Skills</option>
+<option value="Electronic Typing & Shorthand">Electronic Typing & Shorthand</option>
+<option value="Physics">Physics</option>
+<option value="Combined Maths">Combined Maths</option>
+<option value="Chemistry">Chemistry</option>
+<option value="Biology">Biology</option>
+<option value="Agri Science">Agri Science</option>
+<option value="A/L Maths">A/L Maths</option>
+<option value="Higher Maths">Higher Maths</option>
+<option value="Economics">Economics</option>
+<option value="A/L Geography">A/L Geography</option>
+<option value="History (Indian/Europe/Contemporary)">History (Indian/Europe/Contemporary)</option>
+<option value="A/L Drama & Theatre">A/L Drama & Theatre</option>
+<option value="A/L Tamil">A/L Tamil</option>
+<option value="A/L Sinhala">A/L Sinhala</option>
+<option value="Hindu Civilization">Hindu Civilization</option>
+<option value="A/L Hinduism">A/L Hinduism</option>
+<option value="Christian Civilization">Christian Civilization</option>
+<option value="A/L Christianity">A/L Christianity</option>
+<option value="Islam Civilization">Islam Civilization</option>
+<option value="A/L Islam">A/L Islam</option>
+<option value="A/L Buddhism">A/L Buddhism</option>
+<option value="Buddhist Civilization">Buddhist Civilization</option>
+<option value="Business Studies">Business Studies</option>
+<option value="Accountancy">Accountancy</option>
+<option value="Logic & Scientific Method">Logic & Scientific Method</option>
+<option value="Political Science">Political Science</option>
+<option value="A/L Home Economics">A/L Home Economics</option>
+<option value="A/L Carnatic Music">A/L Carnatic Music</option>
+<option value="A/L Art">A/L Art</option>
+<option value="A/L Dancing (Bharatham)">A/L Dancing (Bharatham)</option>
+<option value="A/L Dancing (Traditional)">A/L Dancing (Traditional)</option>
+<option value="A/L Communication & Media Studies">A/L Communication & Media Studies</option>
+<option value="A/L English">A/L English</option>
+<option value="A/L ICT">A/L ICT</option>
+<option value="Agri Technology">Agri Technology</option>
+<option value="Engineering Technology">Engineering Technology</option>
+<option value="Bio Systems Technology">Bio Systems Technology</option>
+<option value="Science for Technology">Science for Technology</option>
+<option value="Child Psychology & Care">Child Psychology & Care</option>
+<option value="Health & Social Care">Health & Social Care</option>
+<option value="Physical Education & Sports">Physical Education & Sports</option>
+<option value="Performing Arts">Performing Arts</option>
+<option value="Event Management">Event Management</option>
+<option value="A/L Art & Craft">A/L Art & Craft</option>
+<option value="Interior Designing">Interior Designing</option>
+<option value="Fashion Designing">Fashion Designing</option>
+<option value="Graphic Design">Graphic Design</option>
+<option value="Landscaping">Landscaping</option>
+<option value="Applied Horticultural Studies">Applied Horticultural Studies</option>
+<option value="Livestock Product Studies">Livestock Product Studies</option>
+<option value="Food Processing Studies">Food Processing Studies</option>
+<option value="Aquatic Resource Studies">Aquatic Resource Studies</option>
+<option value="Construction Studies">Construction Studies</option>
+<option value="Automobile Studies">Automobile Studies</option>
+<option value="Electrical and Electronic Studies">Electrical and Electronic Studies</option>
+<option value="Textile & Apparel Studies">Textile & Apparel Studies</option>
+<option value="Metal Fabrication Studies">Metal Fabrication Studies</option>
+<option value="Aluminum Fabrication Studies">Aluminum Fabrication Studies</option>
+<option value="Computer Hardware & Networking (Web Designing and Software Development)">Computer Hardware & Networking (Web Designing and Software Development)</option>
+<option value="Manufacturing">Manufacturing</option>
+<option value="Tourism & Hospitality">Tourism & Hospitality</option>
+<option value="GIT">GIT</option>
+<option value="General English">General English</option>
+<option value="6-11 Sectional Head">6-11 Sectional Head</option>
+<option value="A/L Sectional Head">A/L Sectional Head</option>
+<option value="Counselling">Counselling</option>
+<option value="Library">Library</option>
+<option value="Special Education">Special Education</option>
+<option value="IT Lab">IT Lab</option>
+<option value="Science Field Study Centre">Science Field Study Centre</option>
+<option value="Performing Principal (With Letter)">Acting Principal (With Letter)</option>
+
+                                </select>
+                                <div class="tooltip">
+                                    <span class="tooltip-icon">?</span>
+                                    <span class="tooltip-text">Subject for which the teacher was originally appointed</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group">
+                                <label for="Teaching_Subject" class="required">Teaching Subject</label>
+                                <select id="Teaching_Subject" name="entry.872373325" class="form-control" required>
+                                    <option value="">-- Select Subject --</option>
+                                   <option value="Primary">Primary</option>
+<option value="Primary English">Primary English</option>
+<option value="Aesthetic (Only for Primary Schools where no.of Students>100)">Aesthetic (Only for Primary Schools where no.of Students>100)</option>
+<option value="Science">Science</option>
+<option value="Mathematics">Mathematics</option>
+<option value="Tamil">Tamil</option>
+<option value="Sinhala">Sinhala</option>
+<option value="English">English</option>
+<option value="History">History</option>
+<option value="Hinduism">Hinduism</option>
+<option value="Buddhism">Buddhism</option>
+<option value="Roman Catholic">Roman Catholic</option>
+<option value="Christianity">Christianity</option>
+<option value="Islam">Islam</option>
+<option value="Business & Accountancy Studies">Business & Accountancy Studies</option>
+<option value="Geography">Geography</option>
+<option value="Civics Studies">Civics Studies</option>
+<option value="Entrepreneurship Studies">Entrepreneurship Studies</option>
+<option value="Second Language Sinhala">Second Language Sinhala</option>
+<option value="Second Language Tamil">Second Language Tamil</option>
+<option value="Sanskrit">Sanskrit</option>
+<option value="Arabic">Arabic</option>
+<option value="Eastern Music">Eastern Music</option>
+<option value="Western Music">Western Music</option>
+<option value="Carnatic Music">Carnatic Music</option>
+<option value="Art">Art</option>
+<option value="Dancing (Traditional)">Dancing (Traditional)</option>
+<option value="Dancing (Bharatha)">Dancing (Bharatha)</option>
+<option value="Appreciation Literary">Appreciation Literary</option>
+<option value="Appreciation Literary (Arabic)">Appreciation Literary (Arabic)</option>
+<option value="Drama & Theatre">Drama & Theatre</option>
+<option value="ICT">ICT</option>
+<option value="Agriculture & Food Technology">Agriculture & Food Technology</option>
+<option value="Aquatic Bioresources Technology">Aquatic Bioresources Technology</option>
+<option value="Design & Technology">Design & Technology</option>
+<option value="Art & Craft">Art & Craft</option>
+<option value="Home Economics">Home Economics</option>
+<option value="Health & Physical Education">Health & Physical Education</option>
+<option value="Communication & Media Studies">Communication & Media Studies</option>
+<option value="Practical and Technical Skills">Practical and Technical Skills</option>
+<option value="Electronic Typing & Shorthand">Electronic Typing & Shorthand</option>
+<option value="Physics">Physics</option>
+<option value="Combined Maths">Combined Maths</option>
+<option value="Chemistry">Chemistry</option>
+<option value="Biology">Biology</option>
+<option value="Agri Science">Agri Science</option>
+<option value="A/L Maths">A/L Maths</option>
+<option value="Higher Maths">Higher Maths</option>
+<option value="Economics">Economics</option>
+<option value="A/L Geography">A/L Geography</option>
+<option value="History (Indian/Europe/Contemporary)">History (Indian/Europe/Contemporary)</option>
+<option value="A/L Drama & Theatre">A/L Drama & Theatre</option>
+<option value="A/L Tamil">A/L Tamil</option>
+<option value="A/L Sinhala">A/L Sinhala</option>
+<option value="Hindu Civilization">Hindu Civilization</option>
+<option value="A/L Hinduism">A/L Hinduism</option>
+<option value="Christian Civilization">Christian Civilization</option>
+<option value="A/L Christianity">A/L Christianity</option>
+<option value="Islam Civilization">Islam Civilization</option>
+<option value="A/L Islam">A/L Islam</option>
+<option value="A/L Buddhism">A/L Buddhism</option>
+<option value="Buddhist Civilization">Buddhist Civilization</option>
+<option value="Business Studies">Business Studies</option>
+<option value="Accountancy">Accountancy</option>
+<option value="Logic & Scientific Method">Logic & Scientific Method</option>
+<option value="Political Science">Political Science</option>
+<option value="A/L Home Economics">A/L Home Economics</option>
+<option value="A/L Carnatic Music">A/L Carnatic Music</option>
+<option value="A/L Art">A/L Art</option>
+<option value="A/L Dancing (Bharatham)">A/L Dancing (Bharatham)</option>
+<option value="A/L Dancing (Traditional)">A/L Dancing (Traditional)</option>
+<option value="A/L Communication & Media Studies">A/L Communication & Media Studies</option>
+<option value="A/L English">A/L English</option>
+<option value="A/L ICT">A/L ICT</option>
+<option value="Agri Technology">Agri Technology</option>
+<option value="Engineering Technology">Engineering Technology</option>
+<option value="Bio Systems Technology">Bio Systems Technology</option>
+<option value="Science for Technology">Science for Technology</option>
+<option value="Child Psychology & Care">Child Psychology & Care</option>
+<option value="Health & Social Care">Health & Social Care</option>
+<option value="Physical Education & Sports">Physical Education & Sports</option>
+<option value="Performing Arts">Performing Arts</option>
+<option value="Event Management">Event Management</option>
+<option value="A/L Art & Craft">A/L Art & Craft</option>
+<option value="Interior Designing">Interior Designing</option>
+<option value="Fashion Designing">Fashion Designing</option>
+<option value="Graphic Design">Graphic Design</option>
+<option value="Landscaping">Landscaping</option>
+<option value="Applied Horticultural Studies">Applied Horticultural Studies</option>
+<option value="Livestock Product Studies">Livestock Product Studies</option>
+<option value="Food Processing Studies">Food Processing Studies</option>
+<option value="Aquatic Resource Studies">Aquatic Resource Studies</option>
+<option value="Construction Studies">Construction Studies</option>
+<option value="Automobile Studies">Automobile Studies</option>
+<option value="Electrical and Electronic Studies">Electrical and Electronic Studies</option>
+<option value="Textile & Apparel Studies">Textile & Apparel Studies</option>
+<option value="Metal Fabrication Studies">Metal Fabrication Studies</option>
+<option value="Aluminum Fabrication Studies">Aluminum Fabrication Studies</option>
+<option value="Computer Hardware & Networking (Web Designing and Software Development)">Computer Hardware & Networking (Web Designing and Software Development)</option>
+<option value="Manufacturing">Manufacturing</option>
+<option value="Tourism & Hospitality">Tourism & Hospitality</option>
+<option value="GIT">GIT</option>
+<option value="General English">General English</option>
+<option value="6-11 Sectional Head">6-11 Sectional Head</option>
+<option value="A/L Sectional Head">A/L Sectional Head</option>
+<option value="Counselling">Counselling</option>
+<option value="Library">Library</option>
+<option value="Special Education">Special Education</option>
+<option value="IT Lab">IT Lab</option>
+<option value="Science Field Study Centre">Science Field Study Centre</option>
+<option value="Performing Principal (With Letter)">Acting Principal (With Letter)</option>
+
+                                </select>
+                                <div class="tooltip">
+                                    <span class="tooltip-icon">?</span>
+                                    <span class="tooltip-text">Subject currently being taught by the teacher</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+					
+                    <div class="row">
+                        <div class="col">
+                            <div class="form-group">
+                                <label for="Service_Grade" class="required">Service Grade</label>
+                                <select id="Service_Grade" name="entry.1525560865" class="form-control" required>
+                                    <option value="">-- Select Grade --</option>
+                                    <option value="SLTS I">SLTS I</option>
+<option value="SLTS 2-I">SLTS 2-I</option>
+<option value="SLTS 2-II">SLTS 2-II</option>
+<option value="SLTS 3-I(අ)">SLTS 3-I(අ)</option>
+<option value="SLTS 3-I ආ( )">SLTS 3-I ආ( )</option>
+<option value="SLTS 3-I ඇ( )">SLTS 3-I ඇ( )</option>
+<option value="SLTS 3-II">SLTS 3-II</option>
+<option value="NOT ABSORBED">NOT ABSORBED</option>
+
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group">
+                                <label for="Currently_employed" class="required">Currently employed in this school?</label>
+                                <select id="Currently_employed" name="entry.1346078791" class="form-control" required>
+                                    <option value="">-- Select Option --</option>
+                                    <option value="Yes">Yes</option>
+                                    <option value="No">No</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group" id="reasonContainer" style="display: none;">
+                        <label for="If_not_employed" class="required">If not employed, please state the reason</label>
+                        <input type="text" id="If_not_employed" name="entry.1278388335" class="form-control" placeholder="Provide reason">
+                    </div>
+                </div>
+
+                <!-- Hidden submit button for form submission -->
+                <input type="submit" id="hiddenSubmit" style="display: none">
+                
+                <!-- Visible button that triggers validation and submission -->
+                <button type="button" id="submitBtn" class="submit-btn">Add Teacher</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="overlay"></div>
+    <div id="successMessage"><span class="spinner"></span>Teacher information successfully added!</div>
+    <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;"></iframe>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Cache DOM elements
+            const form = document.getElementById('teacherForm');
+            const submitBtn = document.getElementById('submitBtn');
+            const hiddenSubmit = document.getElementById('hiddenSubmit');
+            const successMessage = document.getElementById('successMessage');
+            const overlay = document.getElementById('overlay');
+            const hiddenIframe = document.getElementById('hidden_iframe');
+            const currentlyEmployedSelect = document.getElementById('Currently_employed');
+            const reasonContainer = document.getElementById('reasonContainer');
+            const reasonInput = document.getElementById('If_not_employed');
+            const birthdayInput = document.getElementById('Birthday');
+            
+            // Replace this with your actual Google Form URL
+            const googleFormUrl = 'https://docs.google.com/forms/u/0/d/e/1FAIpQLSfvqyZgtYal3TKOonzpJCKZJLEOnMDlgSiCuFKK9GHITcgqNw/formResponse';
+            
+            // Set the form action to the Google Form URL
+            form.action = googleFormUrl;
+            
+            // Show reason field when "No" is selected
+            currentlyEmployedSelect.addEventListener('change', function() {
+                if (this.value === 'No') {
+                    reasonContainer.style.display = 'block';
+                    reasonInput.setAttribute('required', '');
+                } else {
+                    reasonContainer.style.display = 'none';
+                    reasonInput.removeAttribute('required');
+                    reasonInput.value = '';
+                }
+            });
+            
+            // Birthday field validation for YYYYMMDD format
+            birthdayInput.addEventListener('input', function() {
+    // Allow digits and dots
+    this.value = this.value.replace(/[^0-9.]/g, '');
+    
+    // Format as YYYY.MM.DD
+    let val = this.value;
+    if (val.length > 4 && val.charAt(4) !== '.') {
+        val = val.slice(0, 4) + '.' + val.slice(4);
+    }
+    if (val.length > 7 && val.charAt(7) !== '.') {
+        val = val.slice(0, 7) + '.' + val.slice(7);
+    }
+    
+    // Limit to 10 characters (YYYY.MM.DD)
+    if (val.length > 10) {
+        val = val.slice(0, 10);
+    }
+    
+    this.value = val;
+	
+	
+});
+// Appointment date field validation for YYYY.MM.DD format
+const appointmentDateInput = document.getElementById('Appointment_date_of_present_school');
+appointmentDateInput.addEventListener('input', function() {
+    // Allow digits and dots
+    this.value = this.value.replace(/[^0-9.]/g, '');
+    
+    // Format as YYYY.MM.DD
+    let val = this.value;
+    if (val.length > 4 && val.charAt(4) !== '.') {
+        val = val.slice(0, 4) + '.' + val.slice(4);
+    }
+    if (val.length > 7 && val.charAt(7) !== '.') {
+        val = val.slice(0, 7) + '.' + val.slice(7);
+    }
+    
+    // Limit to 10 characters (YYYY.MM.DD)
+    if (val.length > 10) {
+        val = val.slice(0, 10);
+    }
+    
+    this.value = val;
+});
+            
+            // Add field highlighting effect
+            const formControls = document.querySelectorAll('.form-control');
+            formControls.forEach(control => {
+                control.addEventListener('focus', function() {
+                    this.classList.add('highlight');
+                });
+                
+                control.addEventListener('blur', function() {
+                    this.classList.remove('highlight');
+                });
+            });
+            
+            // Prevent default form submission to ensure we use POST method
+            form.addEventListener('submit', function(e) {
+                // Don't prevent if it's our intentional submission
+                if (!form.classList.contains('submitting')) {
+                    e.preventDefault();
+                }
+            });
+            
+            // Handle iframe load event
+            hiddenIframe.addEventListener('load', function() {
+                // Skip the initial load
+                if (!form.classList.contains('submitted')) return;
+                
+                // This event fires when the form is submitted and the response is returned
+                successCallback();
+            });
+            
+            // Success callback function
+            function successCallback() {
+                // Store important values
+                const censusValue = document.getElementById('Census').value;
+                const schoolNameValue = document.getElementById('School_Name').value;
+                
+                // Show success message with animation
+                successMessage.style.display = 'block';
+                overlay.style.display = 'none';
+                
+                // Reset form except census and school name fields
+                const inputs = form.querySelectorAll('input:not(#Census):not(#School_Name)');
+                inputs.forEach(input => {
+                    if (input.type !== 'hidden' && input.type !== 'submit') {
+                        input.value = '';
+                    }
+                });
+                
+                // Reset dropdowns except school name
+                const selects = form.querySelectorAll('select:not(#School_Name)');
+                selects.forEach(select => {
+                    select.selectedIndex = 0;
+                });
+                
+                // Reset school name and census with preserved values
+                document.getElementById('Census').value = censusValue;
+                document.getElementById('School_Name').value = schoolNameValue;
+                
+                // Hide reason field
+                reasonContainer.style.display = 'none';
+                
+                // Hide success message after 3 seconds
+                setTimeout(() => {
+                    successMessage.style.display = 'none';
+                }, 3000);
+                
+                // Scroll to top of form with smooth animation
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+
+                // Remove submitted class after processing
+                form.classList.remove('submitted');
+                form.classList.remove('submitting');
+            }
+            
+            // Submit form handler
+            submitBtn.addEventListener('click', function() {
+                // Check if form is valid
+                if (!form.checkValidity()) {
+                    // Add visual cue for invalid fields
+                    const invalidFields = form.querySelectorAll(':invalid');
+                    invalidFields.forEach(field => {
+                        field.classList.add('highlight');
+                        setTimeout(() => {
+                            field.classList.remove('highlight');
+                        }, 2000);
+                    });
+                    
+                    form.reportValidity();
+                    return;
+                }
+                
+                // Add classes to track submission
+                form.classList.add('submitting');
+                form.classList.add('submitted');
+                
+                // Show loading overlay
+                overlay.style.display = 'block';
+                
+                // Submit the form to hidden iframe using POST method
+                hiddenSubmit.click();
+                
+                // Fallback success trigger in case the iframe load event doesn't fire properly
+                setTimeout(function() {
+                    if (form.classList.contains('submitted')) {
+                        successCallback();
+                    }
+                }, 2000);
+            });
+            
+            // Convenience function to autofill form for testing - can be removed in production
+            function fillTestData() {
+                document.getElementById('Census').value = 'C123456';
+                document.getElementById('School_Name').value = 'Mo/Thanamalwila National School';
+                document.getElementById('Name_of_the_Teacher').value = 'John Smith';
+                document.getElementById('Gender').value = 'Male';
+                document.getElementById('Birthday').value = '19850721';
+                document.getElementById('ID_number').value = 'ID12345678';
+                document.getElementById('Telephone_number').value = '0771234567';
+                document.getElementById('Appointment_subject').value = 'Mathematics';
+                document.getElementById('Teaching_Subject').value = 'Mathematics';
+                document.getElementById('Service_Grade').value = 'SLTS - II';
+                document.getElementById('Currently_employed').value = 'Yes';
+            }
+            
+            // You can call fillTestData() in the console for testing
+        });
+    </script>
+</body>
+</html>

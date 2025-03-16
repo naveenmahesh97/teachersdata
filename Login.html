@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>System Login</title>
+    <style>
+        /* Global Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #333;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 400px;
+            padding: 2rem;
+        }
+        
+        .card {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+            animation: fadeIn 0.6s ease-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            color: #512DA8;
+            text-align: center;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: #555;
+        }
+        
+        input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+        
+        input:focus {
+            outline: none;
+            border-color: #512DA8;
+            box-shadow: 0 0 0 2px rgba(81, 45, 168, 0.2);
+        }
+        
+        button {
+            width: 100%;
+            padding: 0.75rem;
+            background: #512DA8;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.2s;
+        }
+        
+        button:hover {
+            background: #673AB7;
+            transform: translateY(-2px);
+        }
+        
+        button:active {
+            transform: translateY(0);
+        }
+        
+        .error-message {
+            color: #e74c3c;
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+            display: none;
+        }
+        
+        /* Dashboard styles */
+        .dashboard {
+            display: none;
+            max-width: 900px;
+            width: 100%;
+            padding: 2rem;
+        }
+        
+        .welcome-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .welcome-header h1 {
+            margin-bottom: 0;
+            text-align: left;
+            color: white;
+        }
+        
+        .logout-btn {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background 0.3s;
+            width: auto;
+        }
+        
+        .logout-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+        
+        .tiles {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .tile {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 12px;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            height: 250px;
+        }
+        
+        .tile:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        }
+        
+        .tile-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: #512DA8;
+            background: rgba(81, 45, 168, 0.1);
+            width: 80px;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+        
+        .tile h2 {
+            color: #512DA8;
+            margin-bottom: 0.75rem;
+        }
+        
+        .tile p {
+            color: #666;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .container, .dashboard {
+                padding: 1rem;
+            }
+            
+            .tile {
+                height: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Container -->
+    <div id="loginContainer" class="container">
+        <div class="card">
+            <h1>Welcome Back</h1>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" required>
+                    <div class="error-message" id="loginError">Invalid username or password</div>
+                </div>
+                <button type="submit">Sign In</button>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Dashboard Container -->
+    <div id="dashboardContainer" class="dashboard">
+        <div class="welcome-header">
+            <h1>Hello Welcome !                        
+            <button class="logout-btn" id="logoutBtn">Logout</button>
+        </div>
+        <div class="tiles">
+            <div class="tile" id="dataEntryTile">
+                <div class="tile-icon">📝</div>
+                <h2>Data Entry Form</h2>
+                <p>Enter and manage your data records with our easy-to-use form interface.</p>
+            </div>
+            <div class="tile" id="dashboardTile">
+                <div class="tile-icon">📊</div>
+                <h2>Dashboard & Reports</h2>
+                <p>View analytics, generate reports and visualize your data with interactive charts.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sample credentials (in a real app, this would be server-side authentication)
+        const validUser = { username: "admin", password: "zonal@1" };
+        
+        // DOM Elements
+        const loginForm = document.getElementById('loginForm');
+        const loginContainer = document.getElementById('loginContainer');
+        const dashboardContainer = document.getElementById('dashboardContainer');
+        const loginError = document.getElementById('loginError');
+        const userName = document.getElementById('userName');
+        const logoutBtn = document.getElementById('logoutBtn');
+        const dataEntryTile = document.getElementById('dataEntryTile');
+        const dashboardTile = document.getElementById('dashboardTile');
+        
+        // Check if user is already logged in
+        window.addEventListener('DOMContentLoaded', () => {
+            if (localStorage.getItem('isLoggedIn') === 'true') {
+                showDashboard();
+                userName.textContent = localStorage.getItem('username') || 'User';
+            }
+        });
+        
+        // Login Form Submission
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const usernameInput = document.getElementById('username').value;
+            const passwordInput = document.getElementById('password').value;
+            
+            // Simple validation (in a real app, this would be a server request)
+            if (usernameInput === validUser.username && passwordInput === validUser.password) {
+                localStorage.setItem('isLoggedIn', 'true');
+                localStorage.setItem('username', usernameInput);
+                showDashboard();
+                userName.textContent = usernameInput;
+            } else {
+                loginError.style.display = 'block';
+                setTimeout(() => {
+                    loginError.style.display = 'none';
+                }, 3000);
+            }
+        });
+        
+        // Logout Button
+        logoutBtn.addEventListener('click', () => {
+            localStorage.removeItem('isLoggedIn');
+            localStorage.removeItem('username');
+            showLogin();
+        });
+        
+        // Tile Navigation
+        dataEntryTile.addEventListener('click', () => {
+            window.location.href = 'enter.html';
+        });
+        
+        dashboardTile.addEventListener('click', () => {
+            window.location.href = 'dashboard.html';
+        });
+        
+        // Helper Functions
+        function showDashboard() {
+            loginContainer.style.display = 'none';
+            dashboardContainer.style.display = 'block';
+        }
+        
+        function showLogin() {
+            dashboardContainer.style.display = 'none';
+            loginContainer.style.display = 'block';
+        }
+    </script>
+</body>
+</html>
