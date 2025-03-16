@@ -3,8 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>System Login</title>
+    <title>Login</title>
     <style>
+	
+	/* Enhanced Login Styles */
+.login-header {
+    text-align: center;
+    margin-bottom: 2rem;
+    padding-bottom: 1.2rem;
+    border-bottom: 2px solid rgba(81, 45, 168, 0.2);
+    position: relative;
+}
+
+.login-logo {
+    width: 80px;
+    height: 80px;
+    margin-bottom: 1rem;
+    filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));
+}
+
+/* Add the rest of the CSS from my previous response here */
+
         /* Global Styles */
         * {
             margin: 0;
@@ -217,24 +236,33 @@
 <body>
     <!-- Login Container -->
     <div id="loginContainer" class="container">
-        <div class="card">
-            <div class="notification" id="loginNotification"></div>
-            <h1>Welcome Back</h1>
-            <form id="loginForm">
-                <div class="form-group">
-                    <label for="username">Username</label>
-                    <input type="text" id="username" name="username" required>
-                </div>
-                <div class="form-group">
-                    <label for="password">Password</label>
-                    <input type="password" id="password" name="password" required>
-                    <div class="error-message" id="loginError">Invalid username or password</div>
-                </div>
-                <button type="submit">Sign In</button>
-            </form>
+    <div class="card">
+        <div class="notification" id="loginNotification"></div>
+        <div class="login-header">
+            <img src="https://cdn-icons-png.flaticon.com/512/2232/2232688.png" alt="Education Icon" class="login-logo">
+            <h3>Teachers Information System</h3>
+            <h4>Zonal Education Office  Thanamalwila</h4>
         </div>
+        <form id="loginForm">
+            <div class="form-group">
+                <label for="username">
+                    <i class="input-icon user-icon"></i>
+                    Username
+                </label>
+                <input type="text" id="username" name="username" required>
+            </div>
+            <div class="form-group">
+                <label for="password">
+                    <i class="input-icon password-icon"></i>
+                    Password
+                </label>
+                <input type="password" id="password" name="password" required>
+                <div class="error-message" id="loginError">Invalid username or password</div>
+            </div>
+            <button type="submit" class="login-btn">Sign In</button>
+        </form>
     </div>
-    
+</div>
     <!-- Dashboard Container -->
     <div id="dashboardContainer" class="dashboard">
         <div class="welcome-header">
@@ -256,6 +284,8 @@
     </div>
 
     <script>
+	
+	
         // Sample credentials (in a real app, this would be server-side authentication)
         const validUser = { username: "admin", password: "zonal@1" };
         
@@ -360,7 +390,7 @@
         });
         
         dashboardTile.addEventListener('click', () => {
-            window.location.href = 'Dashboard.html';
+            window.location.href = 'dashboard.html';
         });
         
         // Helper Functions
