@@ -937,18 +937,18 @@ window.addEventListener('DOMContentLoaded', () => {
 	
 });
 		// First Appointment Date field validation for YYYY.MM.DD format
-const firstAppointmentDateInput = document.getElementById('First_Appointment_Date');
+const firstAppointmentDateInput = document.getElementById('First_Appointment_date');
 firstAppointmentDateInput.addEventListener('input', function() {
     // Allow digits and dots
     this.value = this.value.replace(/[^0-9.]/g, '');
     
     // Format as YYYY.MM.DD
     let val = this.value;
-    if (val.length === 4) {
-        val = val + '.';
+    if (val.length > 4 && val.charAt(4) !== '.') {
+        val = val.slice(0, 4) + '.' + val.slice(4);
     }
-    if (val.length === 7) {
-        val = val + '.';
+    if (val.length > 7 && val.charAt(7) !== '.') {
+        val = val.slice(0, 7) + '.' + val.slice(7);
     }
     
     // Limit to 10 characters (YYYY.MM.DD)
